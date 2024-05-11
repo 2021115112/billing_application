@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        #paymentContent {
+            border: 1px solid #ccc;
+            padding: 20px;
+        }
+
+        #totalAmount {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        #makePaymentBtn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #makePaymentBtn:hover {
+            background-color: #45a049;
+        }
+
+        footer {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        .logo {
+            font-weight: bold;
+            color: #ff6600;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <span style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;" >  Smart</span><span class="logo">Market</span> <h1 style="text-align: center">Payment Details</h1>
+      </header>
+    <main>
+        <div id="paymentContent">
+            <h2>Total Amount to Pay:</h2>
+            <p id="totalAmount">Total Amount: </p>
+            <button id="makePaymentBtn">Make Payment</button>
+
+        </div>
+    </main>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const totalAmount = urlParams.get('totalAmount');
+
+            const totalAmountElement = document.getElementById('totalAmount');
+            totalAmountElement.textContent += `$${totalAmount}`;
+
+            document.getElementById('makePaymentBtn').addEventListener('click', function() {
+                alert('Payment successful!');
+
+                window.location.href = 'final-bill.html';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #cartContent {
+            border: 1px solid #ccc;
+            padding: 20px;
+        }
+
+        #productList {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #productList li {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        #productList li button {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #productList li button:hover {
+            background-color: #d32f2f;
+        }
+
+        footer {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        .logo {
+            font-weight: bold;
+            color: #ff6600;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <span style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;" >  Smart</span><span class="logo">Market</span> <h1 style="text-align: center">Add Product Details</h1>
+      </header>
+    <main>
+        <form id="addProductForm">
+            <label for="productName">Product Name:</label>
+            <input type="text" id="productName" name="productName" required><br><br>
+            <label for="productPrice">Price:</label>
+            <input type="number" id="productPrice" name="productPrice" min="0" required><br><br>
+            <button type="submit" id="addToCartBtn">Add to Cart</button>
+        </form>
+        <div id="cartContent">
+            <h2>Added Products</h2>
+            <ul id="productList">
+               
+            </ul>
+            <button id="displayBillBtn">Display Bill</button>
+        </div>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            sessionStorage.removeItem('products');
+
+            function displayProduct(name, price) {
+                const productList = document.getElementById('productList');
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `
+                    <span>${name}</span>
+                    <span>$${price}</span>
+                    <button class="removeProductBtn">Remove</button>
+                `;
+
+                listItem.querySelector('.removeProductBtn').addEventListener('click', function() {
+                    productList.removeChild(listItem);
+                    updateTotal();
+                });
+
+                productList.appendChild(listItem);
+
+                const productDetails = {
+                    name: name,
+                    price: price
+                };
+                const products = JSON.parse(localStorage.getItem('products')) || [];
+                products.push(productDetails);
+                localStorage.setItem('products', JSON.stringify(products));
+            }
+
+            document.getElementById('addProductForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const productName = document.getElementById('productName').value;
+                const productPrice = document.getElementById('productPrice').value;
+
+                displayProduct(productName, productPrice);
+
+                document.getElementById('productName').value = '';
+                document.getElementById('productPrice').value = '';
+                updateTotal();
+            });
+
+            function updateTotal() {
+                const productList = JSON.parse(localStorage.getItem('products')) || [];
+                let total = 0;
+                for (const product of productList) {
+                    total += parseFloat(product.price);
+                }
+                document.getElementById('totalAmount').textContent = total.toFixed(2);
+            }
+
+            document.getElementById('displayBillBtn').addEventListener('click', function() {
+                window.location.href = 'bill.html';
+            });
+        });
+    </script>
+</body>
+</html>

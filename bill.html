@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bill</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        #billContent {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        #productList {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #productList li {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        #productList li:last-child {
+            border-bottom: none;
+        }
+
+        #productList li span {
+            flex-basis: 50%;
+        }
+
+        #productList li span:nth-child(2) {
+            text-align: right;
+        }
+
+        #totalAmount {
+            font-weight: bold;
+        }
+
+        #dateTime {
+            margin-top: 20px;
+        }
+
+        #proceedToPaymentBtn,#backaddproduct {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #proceedToPaymentBtn:hover,#backaddproduct:hover {
+            background-color: #45a049;
+        }
+
+        footer {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        .logo {
+            font-weight: bold;
+            color: #ff6600;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <header>
+            <span style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;" >  Smart</span><span class="logo">Market</span> <h1 style="text-align: center">Bill Details</h1>
+          </header>
+    </header>
+    <main>
+        <div id="billContent">
+            <h2>Bill Details</h2>
+            <ul id="productList">
+            </ul>
+            <p id="totalAmount">Total Amount: </p>
+            <p id="dateTime">Date and Time: </p>
+        </div>
+        <button id="proceedToPaymentBtn">Proceed to Payment</button>
+        <button id="backaddproduct">Back to Add Product</button>
+    </main>
+   
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const products = JSON.parse(localStorage.getItem('products')) || [];
+            const productList = document.getElementById('productList');
+            let totalAmount = 0;
+
+            products.forEach(product => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `
+                    <span>Product: ${product.name}</span>
+                    <span>Price: $${product.price}</span>
+                `;
+                productList.appendChild(listItem);
+                totalAmount += parseFloat(product.price);
+            });
+
+            const totalAmountElement = document.getElementById('totalAmount');
+            totalAmountElement.textContent = `Total Amount: $${totalAmount.toFixed(2)}`;
+
+            const currentDate = new Date();
+            const dateTimeString = currentDate.toLocaleString();
+            document.getElementById('dateTime').textContent = `Date and Time: ${dateTimeString}`;
+
+            document.getElementById('proceedToPaymentBtn').addEventListener('click', function() {
+                window.location.href = `payment.html?totalAmount=${totalAmount}`;
+            });
+            document.getElementById('backaddproduct').addEventListener('click', function() {
+                window.location.href = 'add-product.html';
+            });
+        });
+    </script>
+</body>
+</html>
